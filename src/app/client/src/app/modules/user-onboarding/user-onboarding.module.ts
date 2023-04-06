@@ -6,7 +6,7 @@ import {LocationModule} from '../../plugins/location/location.module';
 import { SharedModule } from '@sunbird/shared';
 import {MatStepperModule} from '@angular/material/stepper';
 import {CdkStepperModule} from '@angular/cdk/stepper';
-import {SunbirdPdfPlayerModule} from '@project-sunbird/sunbird-pdf-player-v9';
+// import {SunbirdPdfPlayerModule} from '@project-sunbird/sunbird-pdf-player-v9';
 
 
 
@@ -21,7 +21,7 @@ import {SunbirdPdfPlayerModule} from '@project-sunbird/sunbird-pdf-player-v9';
     SharedModule,
     MatStepperModule,
     CdkStepperModule,
-    SunbirdPdfPlayerModule,
+    // SunbirdPdfPlayerModule,
   ],
   exports: [
     OnboardingPopupComponent

@@ -1,6 +1,6 @@
 import { ConfigService, NavigationHelperService, UtilService } from '@sunbird/shared';
 import { Component, AfterViewInit, ViewChild, ElementRef, Input, Output, EventEmitter,
-OnChanges, HostListener, OnInit, ChangeDetectorRef } from '@angular/core';
+OnChanges, HostListener, OnInit, ChangeDetectorRef, Renderer2 } from '@angular/core';
 import * as _ from 'lodash-es';
 import { PlayerConfig } from '@sunbird/shared';
 import { Router } from '@angular/router';
@@ -27,6 +27,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   @Output() questionScoreSubmitEvents = new EventEmitter<any>();
   @Output() questionScoreReviewEvents = new EventEmitter<any>();
   @ViewChild('contentIframe') contentIframe: ElementRef;
+  @ViewChild('pdf') pdf: ElementRef;
   @Output() playerOnDestroyEvent = new EventEmitter<any>();
   @Output() sceneChangeEvent = new EventEmitter<any>();
   @Input() contentProgressEvents$: Subject<any>;
@@ -82,13 +83,15 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     public resourceService: ResourceService, public navigationHelperService: NavigationHelperService,
     private deviceDetectorService: DeviceDetectorService, private userService: UserService, public formService: FormService
     , public contentUtilsServiceService: ContentUtilsServiceService, private contentService: ContentService,
-    private cdr: ChangeDetectorRef, public playerService: PublicPlayerService, private utilService: UtilService) {
+    private cdr: ChangeDetectorRef, public playerService: PublicPlayerService, private utilService: UtilService, private renderer: Renderer2) {
     this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'))
       ? (<HTMLInputElement>document.getElementById('buildNumber')).value : '1.0';
     this.previewCdnUrl = (<HTMLInputElement>document.getElementById('previewCdnUrl'))
       ? (<HTMLInputElement>document.getElementById('previewCdnUrl')).value : undefined;
     this.isCdnWorking = (<HTMLInputElement>document.getElementById('cdnWorking'))
       ? (<HTMLInputElement>document.getElementById('cdnWorking')).value : 'no';
+
+    
   }
 
   @HostListener('window:orientationchange', ['$event'])
@@ -100,6 +103,8 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   ngOnInit() {
+
+   
     this.checkForQumlPlayer()
     // If `sessionStorage` has UTM data; append the UTM data to context.cdata
     if (this.playerConfig && sessionStorage.getItem('UTM')) {
@@ -157,6 +162,15 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
    * loadPlayer method will be called
    */
   ngAfterViewInit() {
+    console.log('config object to render pdf content ==>', JSON.stringify(this.playerConfig))
+    const pdfElement = this.renderer.createElement('sunbird-pdf-player');
+    console.log('dynamically created element sunbird-pdf-player', pdfElement);
+    pdfElement.setAttribute('player-config', JSON.stringify(this.playerConfig));
+    this.pdf.nativeElement.append(pdfElement);
+    pdfElement.addEventListener('telemetryEvent', (event) => {
+      console.log("On telemetryEvent", JSON.stringify(event));
+    });
+
     if (this.playerConfig) {
       this.loadPlayer();
     }

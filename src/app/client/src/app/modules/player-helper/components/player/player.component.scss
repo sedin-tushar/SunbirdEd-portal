@@ -125,4 +125,15 @@
       max-width: calculateRem(300px);   
   }
 }
+.player-grid {
+  height: 100vh;
+  width: 100%;
+  display: grid;
+  gap: 1.5rem;
+  z-index: 1000;
 
+  @media screen and (max-width:768px) {
+    grid-template-columns: 100%;
+    gap: 0px;
+  }
+}

@@ -14,7 +14,7 @@ import { SharedModule } from '@sunbird/shared';
 import { CoreModule } from '@sunbird/core';
 import { FormsModule } from '@angular/forms';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
-import {SunbirdPdfPlayerModule} from '@project-sunbird/sunbird-pdf-player-v9';
+// import {SunbirdPdfPlayerModule} from '@project-sunbird/sunbird-pdf-player-v9';
 import { QumlPlayerService } from './service/quml-player/quml-player.service';
 import { QumlLibraryModule, QuestionCursor } from '@project-sunbird/sunbird-quml-player-v9';
 
@@ -32,7 +32,7 @@ import { QumlLibraryModule, QuestionCursor } from '@project-sunbird/sunbird-quml
     CoreModule,
     FormsModule,
     CommonConsumptionModule,
-    SunbirdPdfPlayerModule,
+    // SunbirdPdfPlayerModule,
    QumlLibraryModule
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
