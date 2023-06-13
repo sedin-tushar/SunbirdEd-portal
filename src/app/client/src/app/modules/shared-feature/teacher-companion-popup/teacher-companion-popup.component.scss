@@ -1,9 +1,9 @@
 .dialog-title {
   font-size: 24px;
-  margin-bottom: 600px;
-    position: sticky;
-    top: 0;
-    padding: 10px;
+  // margin-bottom: 600px;
+    // position: sticky;
+    // top: 0;
+    // padding: 10px;
     z-index: 1;
 
 }
@@ -24,16 +24,16 @@
 }
 
 .dialog-container {
-  width: 800px;
-  height: 800px;
+  // width: 90vw;
+  // height: 90vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   background-color: #fff;
   // padding: 20px;
-  border-radius: 4px;
-  max-height: 800px;
+  border-radius: 0;
+  height: 100vh;
   /* Adjust the maximum height as needed */
   overflow-y: auto;
 }
@@ -55,11 +55,11 @@
 
 .custom-button {
   background-color: #93cc95;
-  color: white;
+  color:#000;
   font-size: 16px;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
+  // padding: 10px 20px;
+  // border: none;
+  // border-radius: 4px;
   cursor: pointer;
 }
 
@@ -217,3 +217,63 @@ figure {
   66%{ opacity: 0; }
 }
 
+
+
+.mat-dialog-actions {
+  margin-bottom: inherit !important;
+}
+.mat-dialog-content {
+  padding:1rem;
+}
+.question {
+  text-align: left;
+  padding:1rem;
+  background:#f2f2f2;
+  font-weight: bold;    white-space: break-spaces;
+}
+.answ {
+  padding:1rem;
+  text-align: left;
+  background:#dfdfdf;    white-space: break-spaces;
+}
+
+#cdk-overlay-0 {
+  max-width: 100vw;
+  height: 100vh;
+}
+
+::ng-deep {
+  .cdk-overlay-pane {
+    width: 100vw;
+    max-width: 100vw !important;
+    height: 100vh;
+    border-radius: 0;
+  }
+  .cdk-overlay-container .cdk-global-overlay-wrapper .mat-dialog-container {
+    border-radius: 0 !important;
+  }
+}
+
+.loader {
+  width: 48px;
+    height: 48px;
+    position: fixed;
+    bottom: 100px;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+}
+.layout-mat-dialog-content {
+  height: 100vh;
+  width: 100vw;
+}
+.layout-mat-dialog-actions {
+  width: 100%;
+    background: #f2f2f2;
+}
+
+.dialog-title{
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 0;
+}
