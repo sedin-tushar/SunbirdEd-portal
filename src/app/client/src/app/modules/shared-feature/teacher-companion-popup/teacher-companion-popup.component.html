@@ -19,14 +19,15 @@
             </div>
         </div>
 
-        <div  *ngIf="conversion.length>0 && thirdPage">
-            <div *ngFor="let data of conversion" class="container" class="content">
+        <div  *ngIf="conversion.length>0 && thirdPage" id="chatHistory">
+            <div *ngFor="let data of conversion" class="container" class="content" >
                 <div class="question">{{ data.question }}</div>
                 <pre class="answ">{{ data.response }}</pre>
             </div>
             <div class="description">
             </div>
         </div>
+
     </div>
     <div mat-dialog-actions class="layout-mat-dialog-actions">
         <div *ngIf="!isLoading" class="loader">

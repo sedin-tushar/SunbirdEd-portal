@@ -3,9 +3,10 @@ import { AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild } from 
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subject, Subscription, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, delay, map } from 'rxjs/operators';
 import { UserService } from '@sunbird/core';
 import * as _ from 'lodash-es';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -17,7 +18,8 @@ export class TeacherCompanionPopupComponent implements OnInit, AfterViewInit {
   @ViewChild('scrollContainer', { static: false }) scrollContainer: ElementRef;
 
   constructor(private dialogRef: MatDialogRef<TeacherCompanionPopupComponent>, private http: HttpClient, private userService: UserService, @Inject(MAT_DIALOG_DATA) public data: any,
-  ) { }
+  private router: Router)
+   { }
   firstPage: boolean;
   secondPage: boolean;
   selectedOption: string = '';
@@ -98,11 +100,12 @@ export class TeacherCompanionPopupComponent implements OnInit, AfterViewInit {
     // const url = `http://4.224.41.213:9000/query-with-langchain-gpt4?uuid_number=${uuid}&query_string=${encodeURIComponent(querParms)}`;
     const url = `http://20.244.48.128:8000/query-with-langchain-gpt4?uuid_number=${uuid}&query_string=${encodeURIComponent(querParms)}`;
     return this.http.get(url).pipe(
+      delay(2000)
+    ).pipe(
       map((data: any) => {
         this.apiResData = data.answer;
         console.log(this.apiResData);
-        let resObject =
-        {
+        let resObject = {
           index: this.conversion.length + 1,
           question: data.query,
           response: data.answer
@@ -110,6 +113,10 @@ export class TeacherCompanionPopupComponent implements OnInit, AfterViewInit {
         }
         this.conversion.push(resObject);
           // this.scrollToBottom();
+        setTimeout(() => {
+          document.getElementById('chatHistory').scrollIntoView({ behavior: 'smooth', block: 'end' });
+          document.getElementById('chatHistory').scrollIntoView({ behavior: 'smooth', block: 'end' });
+        }, 1000) 
         this.contentHeight = this.scrollContainer.nativeElement.scrollHeight;
         this.isLoading = true;
         return data; // Optional: Return the data if needed

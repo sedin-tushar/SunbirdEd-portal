@@ -16,7 +16,7 @@ let envVariables = {
   PORTAL_SESSION_STORE_TYPE: 'in-memory',
   PORTAL_CASSANDRA_CONSISTENCY_LEVEL: 'one',
   DEFAULT_TENANT: 'sunbird',
-  DEFAULT_CHANNEL: 'ntp',
+  DEFAULT_CHANNEL: 'sunbird',
   sunbird_default_language: 'en',
   TENANT_CDN_URL: '',
   CONTENT_EDITORS_URL: {
