@@ -18,6 +18,9 @@ import { PublicPlayerService } from '@sunbird/public';
 import { TocCardType, PlatformType } from '@project-sunbird/common-consumption';
 import { CsGroupAddableBloc } from '@project-sunbird/client-services/blocs';
 import { ContentManagerService } from '../../../public/module/offline/services';
+import { MatDialog } from '@angular/material/dialog';
+import { TeacherCompanionPopupComponent } from '../../teacher-companion-popup/teacher-companion-popup.component';
+
 
 @Component({
   selector: 'app-collection-player',
@@ -115,7 +118,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     public publicPlayerService: PublicPlayerService, public coursesService: CoursesService,
     private utilService: UtilService, public contentManagerService: ContentManagerService,
     public connectionService: ConnectionService, private telemetryService: TelemetryService,
-    private offlineCardService: OfflineCardService) {
+    private offlineCardService: OfflineCardService,private dialog: MatDialog) {
     this.router.onSameUrlNavigation = 'ignore';
     this.collectionTreeOptions = this.configService.appConfig.collectionTreeOptions;
     this.playerOption = { showContentRating: true };
@@ -157,6 +160,12 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
           this.layoutConfiguration = layoutConfig.layout;
         }
       });
+  }
+  onTeachMateClick() {
+    const dialogRef = this.dialog.open(TeacherCompanionPopupComponent, {
+      // width: '60%',// Adjust the width as needed
+      data: this.collectionData
+    });
   }
 
   onShareLink() {

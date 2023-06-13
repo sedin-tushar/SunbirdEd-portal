@@ -1,0 +1,66 @@
+<div class="dialog-container">
+    <div *ngIf="isLoading">
+        <span class="close-icon" (click)="closeDialog()">&#10005;</span>
+        <div *ngIf="firstPage">
+            <h2 mat-dialog-title class="dialog-title">Hi {{userName}} , What Chapter Are You Teaching Today !!</h2>
+            <!-- <p class="dialog-content"></p> -->
+            <div class="button-container">
+                <mat-form-field>
+                    <mat-label>Select an Chapter</mat-label>
+                    <mat-select [(ngModel)]="selectedOption">
+                        <mat-option *ngFor="let option of options" [value]="option.name">{{ option.name }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <button mat-button class="custom-button" (click)="onSubmit(selectedOption)">Submit</button>
+                <button class="dialog-close-button" (click)="closeDialog()">Close</button>
+            </div>
+        </div>
+        <div class="bottom-div" *ngIf="secondPage">
+            <h2 class="dialog-title">Chapter: {{chapterTilte}}</h2>
+            <div class="button-container">
+                <button mat-button class="custom-button" (click)="onFeatureClick('Quiz')">Quiz</button>
+                <button mat-button class="custom-button" (click)="onFeatureClick('Summary')">Summary</button>
+                <button mat-button class="custom-button" (click)="onFeatureClick('Material')">Material</button>
+                <button class="dialog-close-button" (click)="closeDialog()">Close</button>
+                <div class="search-bar">
+                    <input type="text" placeholder="Learn More.." [(ngModel)]="searchQuery">
+                    <button *ngIf="searchQuery" (click)="searchBasedQuery()">Search</button>
+                </div>
+
+            </div>
+        </div>
+        <div class="bottom-div" *ngIf="thirdPage">
+            <h2 class="dialog-title">{{chapterTilte}}</h2>
+
+            <div class="container">
+                <div class="content">
+                    <p>{{ bookDescription }}</p>
+                </div>
+                <div class="description">
+                </div>
+            </div>
+
+            <div class="button-container">
+                <button mat-button class="custom-button" (click)="onFeatureClick('Quiz')">Quiz</button>
+                <button mat-button class="custom-button" (click)="onFeatureClick('Summary')">Summary</button>
+                <button mat-button class="custom-button" (click)="onFeatureClick('Material')">Material</button>
+                <button class="dialog-close-button" (click)="closeDialog()">Close</button>
+                <div class="search-bar">
+                    <input type="text" placeholder="Learn More.." [(ngModel)]="searchQuery">
+                    <button *ngIf="searchQuery" (click)="searchBasedQuery()">></button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div *ngIf="!isLoading" class="page">
+        <figure>
+            <div class="dot white"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </figure>
+    </div>
+</div>

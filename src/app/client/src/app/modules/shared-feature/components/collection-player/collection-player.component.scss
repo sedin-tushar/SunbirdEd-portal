@@ -46,3 +46,14 @@
     }
   }
 }
+
+.icon-button {
+  display: flex;
+  align-items: center;
+}
+
+.icon-image {
+  width: 24px; /* Adjust the width as needed */
+  height: 24px; /* Adjust the height as needed */
+  margin-right: 8px; /* Adjust the margin as needed */
+}
