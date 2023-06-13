@@ -14,17 +14,16 @@ import { Router } from '@angular/router';
   templateUrl: './teacher-companion-popup.component.html',
   styleUrls: ['./teacher-companion-popup.component.scss'],
 })
-export class TeacherCompanionPopupComponent implements OnInit, AfterViewInit {
-  @ViewChild('scrollContainer', { static: false }) scrollContainer: ElementRef;
+export class TeacherCompanionPopupComponent implements OnInit {
+  // @ViewChild('scrollContainer', { static: false }) scrollContainer: ElementRef;
 
   constructor(private dialogRef: MatDialogRef<TeacherCompanionPopupComponent>, private http: HttpClient, private userService: UserService, @Inject(MAT_DIALOG_DATA) public data: any,
-  private router: Router)
-   { }
+    private router: Router) { }
   firstPage: boolean;
   secondPage: boolean;
   selectedOption: string = '';
   searchQuery: string;
-  thirdPage: boolean;
+  showDesc: boolean;
   bookDescription = '';
   chapterTilte = '';
   uuid;
@@ -35,10 +34,12 @@ export class TeacherCompanionPopupComponent implements OnInit, AfterViewInit {
   userProfile: any;
   userName; any;
   contentHeight;
-
-  options = [
-    {}
-  ];
+  usertType = '';
+  pageTitle = '';
+  options = [{}];
+  isTeacher: boolean = true;
+  isStudent: boolean = false;
+  botImg;
 
   texbookIdConfig =
     {
@@ -50,14 +51,30 @@ export class TeacherCompanionPopupComponent implements OnInit, AfterViewInit {
 
   ];
   ngOnInit() {
-    this.options = this.data.children
+    this.options = this.data.children;
+    this.userTypeConfig();
     this.uuid = this.texbookIdConfig[this.data.identifier];
     this.firstPage = true;
     this.secondPage = false;
-    this.thirdPage = false;
+    this.showDesc = false;
     this.getUserDetails()
   }
+  userTypeConfig() {
+    this.usertType = this.data.userType;
+    if (this.usertType === 'teacher') {
+      this.isTeacher = true;
+      this.isStudent = false;
+      this.pageTitle = 'What Chapter Are You Teaching Today !!'
+      this.botImg = "../../../../../../dist/assets/images/tt.png";
+    }
+    else if (this.usertType === 'student') {
+      this.isStudent = true;
+      this.isTeacher = false;
+      this.pageTitle = 'What do you want to learn today?';
+      this.botImg = "../../../../../../dist/assets/images/st.png";
 
+    }
+  }
   ngOnDestroy() {
     if (this.userSubscription) {
       this.userSubscription.unsubscribe();
@@ -65,25 +82,6 @@ export class TeacherCompanionPopupComponent implements OnInit, AfterViewInit {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
-  scrollToBottom() {
-    // const scrollContainer = this.scrollContainer.nativeElement;
-    // scrollContainer.scrollTop = scrollContainer.scrollHeight;
-    var test = this.contentHeight != this.scrollContainer.nativeElement.scrollHeight 
-    //&& this.contentRef.nativeElement.scrollHeight != (this.contentRef.nativeElement.scrollTop + this.contentRef.nativeElement.offsetHeight);
-  console.log(test);
-
-  if (this.contentHeight != this.scrollContainer.nativeElement.scrollHeight && this.scrollContainer.nativeElement.scrollHeight != (this.scrollContainer.nativeElement.scrollTop + this.scrollContainer.nativeElement.offsetHeight)){
-    this.scrollContainer.nativeElement.scrollTo(0, this.scrollContainer.nativeElement.scrollHeight);
-  }
-  }
-  ngAfterViewInit() {
-    var test = this.contentHeight != this.scrollContainer.nativeElement.scrollHeight 
-    //&& this.contentRef.nativeElement.scrollHeight != (this.contentRef.nativeElement.scrollTop + this.contentRef.nativeElement.offsetHeight);
-  console.log(test);
-
-  if (this.contentHeight != this.scrollContainer.nativeElement.scrollHeight && this.scrollContainer.nativeElement.scrollHeight != (this.scrollContainer.nativeElement.scrollTop + this.scrollContainer.nativeElement.offsetHeight)){
-    this.scrollContainer.nativeElement.scrollTo(0, this.scrollContainer.nativeElement.scrollHeight);
-  }  }
 
   getUserDetails() {
     this.userSubscription = this.userService.userData$.subscribe((user: any) => {
@@ -95,7 +93,7 @@ export class TeacherCompanionPopupComponent implements OnInit, AfterViewInit {
     });
   }
 
-  toGetApiResponse(querParms, uuid): Observable<any> {
+  toGetApiResponse(querParms, uuid, isTeacherAid = false): Observable<any> {
     this.isLoading = false;
     // const url = `http://4.224.41.213:9000/query-with-langchain-gpt4?uuid_number=${uuid}&query_string=${encodeURIComponent(querParms)}`;
     const url = `http://20.244.48.128:8000/query-with-langchain-gpt4?uuid_number=${uuid}&query_string=${encodeURIComponent(querParms)}`;
@@ -104,20 +102,35 @@ export class TeacherCompanionPopupComponent implements OnInit, AfterViewInit {
     ).pipe(
       map((data: any) => {
         this.apiResData = data.answer;
-        console.log(this.apiResData);
         let resObject = {
           index: this.conversion.length + 1,
           question: data.query,
-          response: data.answer
-
+          response: data.answer,
+          isError: false,
+          extraContent: null
+        }
+        if (isTeacherAid && this.usertType === 'teacher') {
+          let extraContent = `
+          Here are courses which can help you learn more about this chapter:
+          Misconceptions in Crop Production - https://staging.sunbirded.org/explore-course/course/do_21381708612600627211220
+          Misconceptions in Crop Management - https://staging.sunbirded.org/explore-course/course/do_21381707533008076811064
+          Other resources that you can refer to:
+          Introduction to Crop Production - https://www.youtube.com/watch?v=xR2DPnyLEE0
+          Common misconceptions in Crop Production - https://www.youtube.com/watch?v=8ulpy_GFLDk&t=10s
+          How to mitigate misconceptions - https://www.youtube.com/watch?v=VaDccWJJ864
+          Introduction to Crop Management - https://www.youtube.com/watch?v=NCp93xbSwWM
+          Common misconceptions in Crop Management - https://www.youtube.com/watch?v=zSCR2K81IRo
+          How to mitigate misconceptions - https://www.youtube.com/watch?v=khXPo_QY0B8
+          `;
+          resObject.extraContent = extraContent
         }
         this.conversion.push(resObject);
-          // this.scrollToBottom();
+        // this.scrollToBottom();
         setTimeout(() => {
           document.getElementById('chatHistory').scrollIntoView({ behavior: 'smooth', block: 'end' });
           document.getElementById('chatHistory').scrollIntoView({ behavior: 'smooth', block: 'end' });
-        }, 1000) 
-        this.contentHeight = this.scrollContainer.nativeElement.scrollHeight;
+        }, 1000)
+        // this.contentHeight = this.scrollContainer.nativeElement.scrollHeight;
         this.isLoading = true;
         return data; // Optional: Return the data if needed
       }),
@@ -125,6 +138,13 @@ export class TeacherCompanionPopupComponent implements OnInit, AfterViewInit {
         // Handle the error
         console.error(error);
         this.isLoading = true;
+        let resObject = {
+          index: this.conversion.length + 1,
+          question: querParms,
+          response: 'Unable to fetch the details please try again !! ',
+          isError: true
+        }
+        this.conversion.push(resObject);
         return throwError(error); // Rethrow the error or return a default value
       })
     );
@@ -134,88 +154,54 @@ export class TeacherCompanionPopupComponent implements OnInit, AfterViewInit {
     this.dialogRef.close();
   }
   onSubmit($) {
-    console.log('$$$', $);
-    this.firstPage = false;
-    this.secondPage = true;
-    this.chapterTilte = this.selectedOption
-    console.log('hi')
+    if (this.selectedOption) {
+      console.log('$$$', $);
+      this.firstPage = false;
+      this.secondPage = true;
+      this.chapterTilte = this.selectedOption
+      console.log('hi')
+    }
   }
 
   searchBasedQuery() {
-    this.thirdPage = true;
+    this.showDesc = true;
     this.firstPage = false;
-    this.secondPage = false;
     this.toGetApiResponse(this.searchQuery, this.uuid).subscribe(data => {
       this.bookDescription = data.answer;
-      // let resObject =
-      // {
-      //   index: this.conversion.length + 1,
-      //   question: data.query,
-      //   response: data.answer
-
-      // }
-      // this.conversion.push(resObject);
     });
     console.log(this.conversion);
-    // Handle the search logic here
     console.log('Search query:', this.searchQuery);
   }
   onFeatureClick(val) {
-    this.thirdPage = true;
+    this.showDesc = true;
     this.firstPage = false;
-    this.secondPage = false;
     if (val === "Quiz") {
       console.log(val)
-      let Quiz = 'Generate 5 MCQ for this ' + this.chapterTilte;
+      let Quiz = this.isTeacher ? 'Generate 5 MCQ for this ' + this.chapterTilte : 'As a student, give me 5 MCQ with correct answer for this chapter ' + this.chapterTilte;
       this.toGetApiResponse(Quiz, this.uuid).subscribe(data => {
         this.bookDescription = data.answer;
-        // let resObject =
-        // {
-        //   index: this.conversion.length + 1,
-        //   question: data.query,
-        //   response: data.answer
-
-        // }
-        // this.conversion.push(resObject);
-
       });
       console.log(this.conversion);
 
     }
     else if (val === "Summary") {
       console.log(val)
-      this.toGetApiResponse('Summarize ' + this.chapterTilte, this.uuid).subscribe(data => {
-        this.bookDescription = data.answer;
-        // let resObject =
-        // {
-        //   index: this.conversion.length + 1,
-        //   question: data.query,
-        //   response: data.answer
-
-        // }
-        // this.conversion.push(resObject);
-
+      let Summary = this.isTeacher ? 'Summarize ' + this.chapterTilte : 'As a student, give me an easy to understand summary of this chapter ' + this.chapterTilte
+      this.toGetApiResponse(Summary, this.uuid).subscribe(data => {
       });
       console.log(this.conversion);
 
     }
     else if (val === "Material") {
-      console.log(val)
-      this.toGetApiResponse('how to teach ' + this.chapterTilte + ' with activities', this.uuid).subscribe(data => {
-        this.bookDescription = data.answer;
-        // let resObject =
-        // {
-        //   index: this.conversion.length + 1,
-        //   question: data.query,
-        //   response: data.answer
-
-        // }
-        // this.conversion.push(resObject);
-
+      this.toGetApiResponse('how to teach ' + this.chapterTilte + ' with activities', this.uuid, true).subscribe(data => {
       });
       console.log(this.conversion);
     }
-    // this.bookDescription = "Friction is a force that opposes the relative motion or tendency of such motion between two surfaces in contact with each other. It acts on both surfaces and depends on the nature and smoothness of the surfaces. Friction can be static (when the object is at rest), sliding (when an object is sliding over another), or rolling (when one body rolls over another). Friction is essential for many everyday activities like walking, gripping objects, and stopping vehicles, but it can also cause wear, tear, and energy loss in some situations";
+    else if (val === 'importantWords') {
+      let importantWords = 'Important Words with meaning - As a student, tell me important words about this chapter that I should learn this chapter ' + this.chapterTilte;
+      this.toGetApiResponse(importantWords, this.uuid, true).subscribe(data => {
+      });
+    }
 
   }
 }

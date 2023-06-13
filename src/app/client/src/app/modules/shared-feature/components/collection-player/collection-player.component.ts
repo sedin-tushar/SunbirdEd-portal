@@ -106,6 +106,9 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   disableDelete: Boolean = false;
   isAvailableLocally = false;
   noContentMessage = '';
+  userType = 'teacher';
+  imgUrl= '';
+  mateLabel = '';
 
   constructor(public route: ActivatedRoute, public playerService: PlayerService,
     private windowScrollService: WindowScrollService, public router: Router, public navigationHelperService: NavigationHelperService,
@@ -126,6 +129,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   ngOnInit() {
+    this.toCheckUserType();
     this.setMimeTypeFilters();
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.isDesktopApp = this.utilService.isDesktopApp;
@@ -151,7 +155,17 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
       });
     }
   }
-
+  toCheckUserType() {
+    this.userType = localStorage.getItem('userType');
+    if (this.userType === 'teacher') {
+      this.imgUrl = "../../../../../assets/images/tt.png"
+      this.mateLabel = "TeachMate"
+    }
+    else if (this.userType === 'student') {
+      this.imgUrl = "../../../../../assets/images/st.png"
+      this.mateLabel = "LearnMate"
+    }
+  }
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.layoutService.switchableLayout().
@@ -162,6 +176,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
       });
   }
   onTeachMateClick() {
+    this.collectionData.userType = this.userType;
     const dialogRef = this.dialog.open(TeacherCompanionPopupComponent, {
       // width: '60%',// Adjust the width as needed
       data: this.collectionData
