@@ -4,7 +4,7 @@
         <div>
             <h6 class="dialog-title sb-color-primary sb__ellipsis fnormal" *ngIf="secondPage">Chapter: {{chapterTilte}}
             </h6>
-            <h6 class="dialog-title sb-color-primary sb__ellipsis fnormal" *ngIf="firstPage">Hi <b>{{userName}}</b></h6>
+            <h6 class="dialog-title sb-color-primary sb__ellipsis fnormal" *ngIf="firstPage">Hi <b>{{userName ? userName: 'Guest'}}</b></h6>
         </div>
         <button class="ml-auto" color="warn" mat-button mat-dialog-close><mat-icon>close</mat-icon></button>
     </div>
@@ -24,18 +24,18 @@
 
         <div *ngIf="conversion?.length>0 && showDesc" class="w-100">
             <div *ngFor="let data of conversion" class="container" class="content">
-                <div class="question"><span class="user_profile">{{userName?.charAt(0)}}</span>{{ data?.question }}
+                <div class="question"><span class="user_profile">{{userName?.charAt(0)?userName?.charAt(0): 'G'}}</span>{{ data?.question }}
                 </div>
                 <p [ngClass]="data?.isError ? 'answ sb-color-error' : 'answ'" id='{{"chatAnswer" + data.index}}'>
                     <span class="chat_profile"><img alt="Icon" class="icon-image ml-8" width="48"
                             [src]="botImg" /></span> <span [innerHTML]="transformHTML(data?.response)"> </span>
                 </p>
-                <div class="answ">
+                <!-- <div *ngIf="courseUrlList.length && isSearchQuery"class="answ">
                     <span class="chat_profile"><img alt="Icon" class="icon-image ml-8" width="48"
                             [src]="botImg" /></span>
                     <div *ngFor="let dataList of courseUrlList" [innerHTML]="transformHTML(dataList)">
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
 

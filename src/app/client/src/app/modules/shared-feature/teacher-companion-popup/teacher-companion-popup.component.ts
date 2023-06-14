@@ -40,11 +40,12 @@ export class TeacherCompanionPopupComponent implements OnInit {
   aidHover: string;
   impHover: string;
   isTeachingAid: boolean = false;
+  isSearchQuery: boolean = false;
   texbookIdConfig =
     {
       "do_2138168881245880321735": "4c67c7f4-0919-11ee-9081-0242ac110002"
     }
-  courseUrlList = [];
+  courseUrlList = '';
   conversion = [];
   ngOnInit() {
     this.options = this.data.children;
@@ -88,13 +89,10 @@ export class TeacherCompanionPopupComponent implements OnInit {
     this.userSubscription = this.userService.userData$.subscribe((user: any) => {
       if (user.userProfile) {
         this.userName = _.get(user.userProfile, 'firstName');
-        console.log('user', user);
-        console.log('this.', this.userName);
       }
     },
       (error) => {
         this.userName = "Guest";
-        console.log()
       });
 
     if (!this.userSubscription)
@@ -109,28 +107,28 @@ export class TeacherCompanionPopupComponent implements OnInit {
       delay(2000)
     ).pipe(
       map((data: any) => {
-        this.apiResData = data.answer;
+        this.apiResData = this.isSearchQuery ? data.answer : data.answer+'<br>'+this.courseUrlList;
         let resObject = {
           index: this.conversion.length + 1,
           question: data.query,
-          response: data.answer,
+          response: this.apiResData,
           isError: false,
           extraContent: null
         }
         // if (isTeacherAid && this.usertType === 'teacher') {
-        //   let extraContent = `
-        //   Here are courses which can help you learn more about this chapter:
-        //   Misconceptions in Crop Production -  <a href="https://staging.sunbirded.org/explore-course/course/do_21381707533008076811064" target="_blank">https://staging.sunbirded.org/explore-course/course/do_21381707533008076811064</a>
-        //   Misconceptions in Crop Management - https://staging.sunbirded.org/explore-course/course/do_21381707533008076811064
-        //   Other resources that you can refer to:
-        //   Introduction to Crop Production - https://www.youtube.com/watch?v=xR2DPnyLEE0
-        //   Common misconceptions in Crop Production - https://www.youtube.com/watch?v=8ulpy_GFLDk&t=10s
-        //   How to mitigate misconceptions - https://www.youtube.com/watch?v=VaDccWJJ864
-        //   Introduction to Crop Management - https://www.youtube.com/watch?v=NCp93xbSwWM
-        //   Common misconceptions in Crop Management - https://www.youtube.com/watch?v=zSCR2K81IRo
-        //   How to mitigate misconceptions - https://www.youtube.com/watch?v=khXPo_QY0B8
+          // let extraContent = `
+          // Here are courses which can help you learn more about this chapter:
+          // Misconceptions in Crop Production -  <a href="https://staging.sunbirded.org/explore-course/course/do_21381707533008076811064" target="_blank">https://staging.sunbirded.org/explore-course/course/do_21381707533008076811064</a>
+          // Misconceptions in Crop Management - https://staging.sunbirded.org/explore-course/course/do_21381707533008076811064
+          // Other resources that you can refer to:
+          // Introduction to Crop Production - https://www.youtube.com/watch?v=xR2DPnyLEE0
+          // Common misconceptions in Crop Production - https://www.youtube.com/watch?v=8ulpy_GFLDk&t=10s
+          // How to mitigate misconceptions - https://www.youtube.com/watch?v=VaDccWJJ864
+          // Introduction to Crop Management - https://www.youtube.com/watch?v=NCp93xbSwWM
+          // Common misconceptions in Crop Management - https://www.youtube.com/watch?v=zSCR2K81IRo
+          // How to mitigate misconceptions - https://www.youtube.com/watch?v=khXPo_QY0B8
 
-        //   `;
+          // `;
         //   resObject.extraContent = extraContent
         // }
         this.conversion.push(resObject);
@@ -159,7 +157,7 @@ export class TeacherCompanionPopupComponent implements OnInit {
     );
   }
 
-  toGetContentUrl(selChapter, category) {
+  toGetContentUrl(selChapter, category, QueryData) {
     const url = `https://diksha.gov.in/api/content/v1/search`;
     let request = {
       request: {
@@ -192,18 +190,18 @@ export class TeacherCompanionPopupComponent implements OnInit {
       }
     }
     return this.http.post(url, request).subscribe((resData: any) => {
-      console.log('data', resData);
-      let reData = {
-        courseUrlName: '<b>Here are some additional learning materials which can help you learn more about this chapter :' + this.chapterTilte + '</b',
-      };
-      this.courseUrlList.push(reData.courseUrlName);
+      
+      this.courseUrlList = '<br><b>Here are some additional learning materials which can help you learn more about this chapter :' + this.chapterTilte + '</b>' ,
+      // this.courseUrlList.push(reData.courseUrlName);
       resData.result.content.map(dataList => {
-        console.log(dataList?.name + ':https://diksha.gov.in/ncert/play/' + dataList?.objectType + '/' + dataList?.identifier + '?contentType=' + dataList?.contentType);
-        reData = {
-          courseUrlName: dataList?.name + ':' + ' <a target="_blank" href="https://diksha.gov.in/ncert/play/' + dataList?.objectType.toLowerCase() + '/' + dataList?.identifier + '?contentType=' + dataList?.contentType + '">Learn More</a>'
-        };
-        this.courseUrlList.push(reData.courseUrlName);
+        this.courseUrlList =  this.courseUrlList + '<br>'+ dataList?.name + ':' + ' <a target="_blank" href="https://diksha.gov.in/ncert/play/' + dataList?.objectType.toLowerCase() + '/' + dataList?.identifier + '?contentType=' + dataList?.contentType + '">Learn More</a>';
+        // console.log(dataList?.name + ':https://diksha.gov.in/ncert/play/' + dataList?.objectType + '/' + dataList?.identifier + '?contentType=' + dataList?.contentType);
+        // reData = {
+        //   courseUrlName: dataList?.name + ':' + ' <a target="_blank" href="https://diksha.gov.in/ncert/play/' + dataList?.objectType.toLowerCase() + '/' + dataList?.identifier + '?contentType=' + dataList?.contentType + '">Learn More</a>'
+        // };
+        // this.courseUrlList.push(reData.courseUrlName);
       })
+      this.toGetApiResponse(QueryData, this.uuid).subscribe(data => { });
     })
   }
   closeDialog(): void {
@@ -211,64 +209,59 @@ export class TeacherCompanionPopupComponent implements OnInit {
   }
   onSubmit($) {
     if (this.selectedOption) {
-      console.log('$$$', $);
       this.firstPage = false;
       this.secondPage = true;
       this.chapterTilte = this.selectedOption
-      console.log('hi');
 
     }
   }
   searchBasedQuery() {
+    // this.courseUrlList = [];
+    this.isSearchQuery = true;
     this.showDesc = true;
     this.firstPage = false;
     this.toGetApiResponse(this.searchQuery, this.uuid).subscribe(data => {
       this.bookDescription = data.answer;
     });
-    console.log(this.conversion);
-    console.log('Search query:', this.searchQuery);
   }
   onFeatureClick(val) {
+    this.isSearchQuery = false;
     this.showDesc = true;
     this.firstPage = false;
     if (val === "Quiz") {
-      console.log(val)
-      this.courseUrlList = [];
+      this.courseUrlList = '';
       let Quiz = this.isTeacher ? 'Generate 5 MCQ for this ' + this.chapterTilte : 'As a student, give me 5 MCQ with correct answer for this chapter ' + this.chapterTilte;
-      this.toGetApiResponse(Quiz, this.uuid).subscribe(data => {
-        if (data)
-          this.toGetContentUrl(this.selectedOption, 'Practice Question Set')
-      });
-      console.log(this.conversion);
+      this.toGetContentUrl(this.selectedOption, 'Practice Question Set', Quiz);
+
+      // this.toGetApiResponse(Quiz, this.uuid).subscribe(data => {
+      // if (data)
+      // });
 
     }
     else if (val === "Summary") {
-      console.log(val)
-      this.courseUrlList = [];
+      this.courseUrlList = '';
+      // this.toGetContentUrl(this.selectedOption, 'Explanation Content')
       let Summary = this.isTeacher ? 'Summarize ' + this.chapterTilte : 'As a student, give me an easy to understand summary of this chapter ' + this.chapterTilte;
-      this.toGetApiResponse(Summary, this.uuid).subscribe(data => {
-        if (data)
-          this.toGetContentUrl(this.selectedOption, 'Explanation Content')
-      });
-      console.log(this.conversion);
+      this.toGetContentUrl(this.selectedOption, 'Explanation Content', Summary);
+
 
     }
     else if (val === "Material") {
-      console.log('Data1211', this.courseUrlList);
-      this.courseUrlList = [];
-      this.toGetApiResponse('how to teach ' + this.chapterTilte + ' with activities', this.uuid, true).subscribe(data => {
-        if (data)
-          this.toGetContentUrl(this.selectedOption, 'Teacher Resource');
-      });
-      console.log(this.conversion);
+      this.courseUrlList = '';
+      // this.toGetContentUrl(this.selectedOption, 'Teacher Resource');
+      // this.toGetApiResponse('how to teach ' + this.chapterTilte + ' with activities', this.uuid, true).subscribe(data => {
+      // });
+      this.toGetContentUrl(this.selectedOption, 'Teacher Resource', 'how to teach ' + this.chapterTilte + ' with activities');
+
     }
     else if (val === 'importantWords') {
-      this.courseUrlList = [];
+      this.courseUrlList = '';
+      // this.toGetContentUrl(this.selectedOption, 'Explanation Content');
       let importantWords = 'Important Words with meaning - As a student, tell me important words about this chapter that I should learn this chapter ' + this.chapterTilte;
-      this.toGetApiResponse(importantWords, this.uuid, true).subscribe(data => {
-        if (data)
-          this.toGetContentUrl(this.selectedOption, 'Explanation Content');
-      });
+      this.toGetContentUrl(this.selectedOption, 'Explanation Content', importantWords);
+
+      // this.toGetApiResponse(importantWords, this.uuid, true).subscribe(data => {
+      // });
     }
 
   }
