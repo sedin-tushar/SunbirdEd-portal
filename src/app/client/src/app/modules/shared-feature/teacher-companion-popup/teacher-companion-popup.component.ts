@@ -6,7 +6,6 @@ import { Observable, Subject, Subscription, throwError } from 'rxjs';
 import { catchError, delay, map } from 'rxjs/operators';
 import { UserService } from '@sunbird/core';
 import * as _ from 'lodash-es';
-import { Router } from '@angular/router';
 
 
 @Component({
@@ -15,10 +14,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./teacher-companion-popup.component.scss'],
 })
 export class TeacherCompanionPopupComponent implements OnInit {
-  // @ViewChild('scrollContainer', { static: false }) scrollContainer: ElementRef;
-
-  constructor(private dialogRef: MatDialogRef<TeacherCompanionPopupComponent>, private http: HttpClient, private userService: UserService, @Inject(MAT_DIALOG_DATA) public data: any,
-    private router: Router) { }
+  constructor(private dialogRef: MatDialogRef<TeacherCompanionPopupComponent>, private http: HttpClient, private userService: UserService, @Inject(MAT_DIALOG_DATA) public data: any) { }
   firstPage: boolean;
   secondPage: boolean;
   selectedOption: string = '';
@@ -40,16 +36,15 @@ export class TeacherCompanionPopupComponent implements OnInit {
   isTeacher: boolean = true;
   isStudent: boolean = false;
   botImg;
-
+  quizHover: string;
+  summaryHover: string;
+  aidHover: string;
+  impHover: string;
   texbookIdConfig =
     {
       "do_2138168881245880321735": "4c67c7f4-0919-11ee-9081-0242ac110002"
     }
-
-  conversion = [
-
-
-  ];
+  conversion = [];
   ngOnInit() {
     this.options = this.data.children;
     this.userTypeConfig();
@@ -66,13 +61,18 @@ export class TeacherCompanionPopupComponent implements OnInit {
       this.isStudent = false;
       this.pageTitle = 'What Chapter Are You Teaching Today !!'
       this.botImg = "../../../../../../dist/assets/images/tt.png";
+      this.quizHover = "Generate questions to test your students";
+      this.summaryHover = "Summarize the chapter for you.";
+      this.aidHover = "Resource to help you teach this chapter";
     }
     else if (this.usertType === 'student') {
       this.isStudent = true;
       this.isTeacher = false;
       this.pageTitle = 'What do you want to learn today?';
       this.botImg = "../../../../../../dist/assets/images/st.png";
-
+      this.quizHover = "Generate questions to learn";
+      this.summaryHover = "Summarize the chapter for you..";
+      this.impHover = "Important Words with meaning";
     }
   }
   ngOnDestroy() {
@@ -95,7 +95,6 @@ export class TeacherCompanionPopupComponent implements OnInit {
 
   toGetApiResponse(querParms, uuid, isTeacherAid = false): Observable<any> {
     this.isLoading = false;
-    // const url = `http://4.224.41.213:9000/query-with-langchain-gpt4?uuid_number=${uuid}&query_string=${encodeURIComponent(querParms)}`;
     const url = `http://20.244.48.128:8000/query-with-langchain-gpt4?uuid_number=${uuid}&query_string=${encodeURIComponent(querParms)}`;
     return this.http.get(url).pipe(
       delay(2000)
@@ -125,17 +124,13 @@ export class TeacherCompanionPopupComponent implements OnInit {
           resObject.extraContent = extraContent
         }
         this.conversion.push(resObject);
-        // this.scrollToBottom();
         setTimeout(() => {
-          document.getElementById('chatHistory').scrollIntoView({ behavior: 'smooth', block: 'end' });
-          document.getElementById('chatHistory').scrollIntoView({ behavior: 'smooth', block: 'end' });
+          document.getElementById('chatAnswer' + resObject.index).scrollIntoView({ behavior: 'smooth', block: 'end' });
         }, 1000)
-        // this.contentHeight = this.scrollContainer.nativeElement.scrollHeight;
         this.isLoading = true;
-        return data; // Optional: Return the data if needed
+        return data;
       }),
       catchError((error: any) => {
-        // Handle the error
         console.error(error);
         this.isLoading = true;
         let resObject = {
@@ -145,11 +140,13 @@ export class TeacherCompanionPopupComponent implements OnInit {
           isError: true
         }
         this.conversion.push(resObject);
+        setTimeout(() => {
+          document.getElementById('chatAnswer' + resObject.index).scrollIntoView({ behavior: 'smooth', block: 'end' });
+        }, 1000)
         return throwError(error); // Rethrow the error or return a default value
       })
     );
   }
-
   closeDialog(): void {
     this.dialogRef.close();
   }
@@ -162,7 +159,6 @@ export class TeacherCompanionPopupComponent implements OnInit {
       console.log('hi')
     }
   }
-
   searchBasedQuery() {
     this.showDesc = true;
     this.firstPage = false;
@@ -186,7 +182,7 @@ export class TeacherCompanionPopupComponent implements OnInit {
     }
     else if (val === "Summary") {
       console.log(val)
-      let Summary = this.isTeacher ? 'Summarize ' + this.chapterTilte : 'As a student, give me an easy to understand summary of this chapter ' + this.chapterTilte
+      let Summary = this.isTeacher ? 'Summarize ' + this.chapterTilte : 'As a student, give me an easy to understand summary of this chapter ' + this.chapterTilte;
       this.toGetApiResponse(Summary, this.uuid).subscribe(data => {
       });
       console.log(this.conversion);

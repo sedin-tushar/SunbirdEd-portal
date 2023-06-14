@@ -252,12 +252,12 @@ figure {
 }
 
 ::ng-deep {
-  .cdk-overlay-pane {
-    width: 100vw;
-    max-width: 100vw !important;
-    height: 100vh;
-    border-radius: 0;
-  }
+  // .cdk-overlay-pane {
+  //   width: 100vw;
+  //   max-width: 100vw !important;
+  //   height: 100vh;
+  //   border-radius: 0;
+  // }
   .cdk-overlay-container .cdk-global-overlay-wrapper .mat-dialog-container {
     border-radius: 0 !important;
   }

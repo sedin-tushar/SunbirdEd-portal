@@ -4,7 +4,6 @@
         <div>
             <h6 class="dialog-title sb-color-primary sb__ellipsis fnormal" *ngIf="secondPage">Chapter: {{chapterTilte}}
             </h6>
-            <!-- <h6 class="dialog-title sb-color-primary sb__ellipsis fnormal" *ngIf="thirdPage">{{chapterTilte}}</h6> -->
             <h6 class="dialog-title sb-color-primary sb__ellipsis fnormal" *ngIf="firstPage">Hi <b>{{userName}}</b></h6>
         </div>
         <button class="ml-auto" color="warn" mat-button mat-dialog-close><mat-icon>close</mat-icon></button>
@@ -12,7 +11,6 @@
     <div mat-dialog-content class="layout-mat-dialog-content d-flex flex-jc-center">
         <div *ngIf="firstPage" class="mt-40">
             <h2 class="sb-color-primary mb-40">{{pageTitle}}</h2>
-            <!-- <p class="dialog-content"></p> -->
             <div class="w-75 text-center m-auto">
                 <mat-form-field color="primary" class="w-100">
                     <mat-label>Select an Chapter</mat-label>
@@ -24,12 +22,12 @@
             </div>
         </div>
 
-        <div *ngIf="conversion?.length>0 && showDesc" id="chatHistory" class="w-100">
+        <div *ngIf="conversion?.length>0 && showDesc" class="w-100">
             <div *ngFor="let data of conversion" class="container" class="content">
                 <div class="question"><span class="user_profile">{{userName?.charAt(0)}}</span>{{ data?.question }}
                 </div>
-                <pre
-                    [ngClass]="data?.isError ? 'answ sb-color-error' : 'answ'"><span class="chat_profile"><img alt="Icon" class="icon-image ml-8" width="48" [src]="botImg"/> </span>{{ data?.response }}</pre>
+                <pre [ngClass]="data?.isError ? 'answ sb-color-error' : 'answ'" id='{{"chatAnswer" + data.index}}'>
+                                    <span class="chat_profile"><img alt="Icon" class="icon-image ml-8" width="48" [src]="botImg"/></span>{{ data?.response }}</pre>
                 <!-- <div *ngIf="data?.extraContent">
                     {{
                         data?.extraContent
@@ -53,22 +51,19 @@
             (click)="onSubmit(selectedOption)">Next</button>
         <div class="button-container m-auto" *ngIf="secondPage">
             <button class="sb-btn sb-btn-primary sb-btn-normal d-flex flex-ai-center btn-action"
-                (click)="onFeatureClick('Quiz')"
-                matTooltip="Generate questions to test your students"><mat-icon>quiz</mat-icon> <span
+                (click)="onFeatureClick('Quiz')" [matTooltip]="quizHover"><mat-icon>quiz</mat-icon> <span
                     class="ml-8">Quiz</span></button>
             <button class="sb-btn sb-btn-secondary sb-btn-normal d-flex flex-ai-center btn-action"
-                (click)="onFeatureClick('Summary')"
-                matTooltip="Summarize the chapter for you"><mat-icon>summarize</mat-icon> <span class="ml-8">Chapter
+                (click)="onFeatureClick('Summary')" [matTooltip]="summaryHover"><mat-icon>summarize</mat-icon> <span
+                    class="ml-8">Chapter
                     Summary</span></button>
             <button *ngIf="isTeacher" class="sb-btn sb-btn-tertiary sb-btn-normal d-flex flex-ai-center btn-action"
-                (click)="onFeatureClick('Material')"
-                matTooltip="Resources to help you teach this chapter"><mat-icon>local_library</mat-icon> <span
+                (click)="onFeatureClick('Material')" [matTooltip]="aidHover"><mat-icon>local_library</mat-icon> <span
                     class="ml-8">Teaching Aid</span></button>
 
             <button *ngIf="isStudent" class="sb-btn sb-btn-tertiary sb-btn-normal d-flex flex-ai-center btn-action"
-                (click)="onFeatureClick('importantWords')"
-                matTooltip="Important Words with meaning"><mat-icon>local_library</mat-icon> <span
-                    class="ml-8">Important Words</span></button>
+                (click)="onFeatureClick('importantWords')" [matTooltip]="impHover"><mat-icon>local_library</mat-icon>
+                <span class="ml-8">Important Words</span></button>
             <div class="search-bar">
                 <input type="text" placeholder="Learn More.." (keyup.enter)="searchBasedQuery()"
                     [(ngModel)]="searchQuery">

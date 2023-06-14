@@ -178,7 +178,8 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   onTeachMateClick() {
     this.collectionData.userType = this.userType;
     const dialogRef = this.dialog.open(TeacherCompanionPopupComponent, {
-      // width: '60%',// Adjust the width as needed
+      width: '100vw',
+      maxWidth: '100vw',
       data: this.collectionData
     });
   }
