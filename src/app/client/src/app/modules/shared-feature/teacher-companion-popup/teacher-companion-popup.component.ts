@@ -6,6 +6,7 @@ import { Observable, Subject, Subscription, throwError } from 'rxjs';
 import { catchError, delay, map } from 'rxjs/operators';
 import { UserService } from '@sunbird/core';
 import * as _ from 'lodash-es';
+import { DomSanitizer } from '@angular/platform-browser';
 
 
 @Component({
@@ -14,7 +15,7 @@ import * as _ from 'lodash-es';
   styleUrls: ['./teacher-companion-popup.component.scss'],
 })
 export class TeacherCompanionPopupComponent implements OnInit {
-  constructor(private dialogRef: MatDialogRef<TeacherCompanionPopupComponent>, private http: HttpClient, private userService: UserService, @Inject(MAT_DIALOG_DATA) public data: any) { }
+  constructor(private dialogRef: MatDialogRef<TeacherCompanionPopupComponent>, private http: HttpClient, private userService: UserService, @Inject(MAT_DIALOG_DATA) public data: any, private sanitizer: DomSanitizer,) { }
   firstPage: boolean;
   secondPage: boolean;
   selectedOption: string = '';
@@ -63,7 +64,7 @@ export class TeacherCompanionPopupComponent implements OnInit {
       this.botImg = "../../../../../../dist/assets/images/tt.png";
       this.quizHover = "Generate questions to test your students";
       this.summaryHover = "Summarize the chapter for you.";
-      this.aidHover = "Resource to help you teach this chapter";
+      this.aidHover = "Resources to help you teach this chapter";
     }
     else if (this.usertType === 'student') {
       this.isStudent = true;
@@ -128,6 +129,7 @@ export class TeacherCompanionPopupComponent implements OnInit {
           document.getElementById('chatAnswer' + resObject.index).scrollIntoView({ behavior: 'smooth', block: 'end' });
         }, 1000)
         this.isLoading = true;
+        this.searchQuery = '';
         return data;
       }),
       catchError((error: any) => {
@@ -199,5 +201,8 @@ export class TeacherCompanionPopupComponent implements OnInit {
       });
     }
 
+  }
+  transformHTML(data: any) {
+    return this.sanitizer.bypassSecurityTrustHtml(data);
   }
 }

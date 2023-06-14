@@ -26,13 +26,17 @@
             <div *ngFor="let data of conversion" class="container" class="content">
                 <div class="question"><span class="user_profile">{{userName?.charAt(0)}}</span>{{ data?.question }}
                 </div>
-                <pre [ngClass]="data?.isError ? 'answ sb-color-error' : 'answ'" id='{{"chatAnswer" + data.index}}'>
-                                    <span class="chat_profile"><img alt="Icon" class="icon-image ml-8" width="48" [src]="botImg"/></span>{{ data?.response }}</pre>
-                <!-- <div *ngIf="data?.extraContent">
-                    {{
-                        data?.extraContent
-                    }}
-                </div> -->
+                <p [ngClass]="data?.isError ? 'answ sb-color-error' : 'answ'" id='{{"chatAnswer" + data.index}}'>
+                    <span class="chat_profile"><img alt="Icon" class="icon-image ml-8" width="48" [src]="botImg" /></span> <span
+                        [innerHTML]="transformHTML(data?.response)"> </span>
+                </p>
+                <div *ngIf="data?.extraContent">
+                    <p class="answ">
+                        <span class="chat_profile"><img alt="Icon" class="icon-image ml-8" width="48" [src]="botImg" /></span>
+                        <span [innerHTML]="transformHTML(data?.extraContent)"> </span>
+                    </p>
+                    <!-- <p [innerHTML]="transformHTML(data?.extraContent)"></p> -->
+                </div>
             </div>
         </div>
 

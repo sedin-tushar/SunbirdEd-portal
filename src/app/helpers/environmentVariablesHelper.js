@@ -106,12 +106,12 @@ let envVariables = {
   sunbird_portal_cassandra_db_health_status: "true",
 
   // Keys
-  KONG_DEVICE_REGISTER_AUTH_TOKEN: "test",
-  sunbird_anonymous_default_token: "test",
-  sunbird_anonymous_register_token: "test",
-  sunbird_loggedin_register_token: "test",
-  sunbird_logged_default_token: "test",
-  PORTAL_API_AUTH_TOKEN: "test",
+  KONG_DEVICE_REGISTER_AUTH_TOKEN: env.sunbird_kong_device_register_token,
+  sunbird_anonymous_default_token: env.sunbird_anonymous_default_token,
+  sunbird_anonymous_register_token: env.sunbird_anonymous_register_token,
+  sunbird_loggedin_register_token: env.sunbird_loggedin_register_token,
+  sunbird_logged_default_token: env.sunbird_logged_default_token,
+  PORTAL_API_AUTH_TOKEN: env.sunbird_api_auth_token,
 
 }
 envVariables.PORTAL_CASSANDRA_URLS = ["localhost:9042"];
