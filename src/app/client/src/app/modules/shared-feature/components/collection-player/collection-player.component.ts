@@ -156,7 +156,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     }
   }
   toCheckUserType() {
-    this.userType = localStorage.getItem('userType');
+    this.userType = localStorage.getItem('userType')|| 'teacher';
     if (this.userType === 'teacher') {
       this.imgUrl = "../../../../../assets/images/tt.png"
       this.mateLabel = "TeachMate"

@@ -52,7 +52,7 @@
               (click)="onShareLink();sharelinkModal=true;" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
               <i class="blue share alternate icon"></i> {{resourceService?.frmelmnts?.lbl?.share}}
             </button>
-            <button  *ngIf="!isDesktopApp && permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook'" class="icon-button" type="button" tabindex="0" (click)="onTeachMateClick()" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
+            <button  *ngIf="collectionTreeNodes.data.contentType === 'TextBook'" class="icon-button" type="button" tabindex="0" (click)="onTeachMateClick()" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
               <img [src]="imgUrl" alt="Icon" class="icon-image">{{mateLabel}}
             </button>
             <button type="button" appTelemetryInteract [telemetryInteractObject]="collectionInteractObject"

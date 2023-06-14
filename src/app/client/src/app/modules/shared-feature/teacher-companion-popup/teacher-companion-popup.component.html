@@ -27,15 +27,14 @@
                 <div class="question"><span class="user_profile">{{userName?.charAt(0)}}</span>{{ data?.question }}
                 </div>
                 <p [ngClass]="data?.isError ? 'answ sb-color-error' : 'answ'" id='{{"chatAnswer" + data.index}}'>
-                    <span class="chat_profile"><img alt="Icon" class="icon-image ml-8" width="48" [src]="botImg" /></span> <span
-                        [innerHTML]="transformHTML(data?.response)"> </span>
+                    <span class="chat_profile"><img alt="Icon" class="icon-image ml-8" width="48"
+                            [src]="botImg" /></span> <span [innerHTML]="transformHTML(data?.response)"> </span>
                 </p>
-                <div *ngIf="data?.extraContent">
-                    <p class="answ">
-                        <span class="chat_profile"><img alt="Icon" class="icon-image ml-8" width="48" [src]="botImg" /></span>
-                        <span [innerHTML]="transformHTML(data?.extraContent)"> </span>
-                    </p>
-                    <!-- <p [innerHTML]="transformHTML(data?.extraContent)"></p> -->
+                <div class="answ">
+                    <span class="chat_profile"><img alt="Icon" class="icon-image ml-8" width="48"
+                            [src]="botImg" /></span>
+                    <div *ngFor="let dataList of courseUrlList" [innerHTML]="transformHTML(dataList)">
+                    </div>
                 </div>
             </div>
         </div>
