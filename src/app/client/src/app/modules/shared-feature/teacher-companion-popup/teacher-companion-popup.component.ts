@@ -6,7 +6,7 @@ import { Observable, Subject, Subscription, throwError } from 'rxjs';
 import { catchError, delay, map } from 'rxjs/operators';
 import { UserService } from '@sunbird/core';
 import * as _ from 'lodash-es';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 @Component({
   selector: 'app-teacher-companion-popup',
   templateUrl: './teacher-companion-popup.component.html',
@@ -41,6 +41,7 @@ export class TeacherCompanionPopupComponent implements OnInit {
   impHover: string;
   isTeachingAid: boolean = false;
   isSearchQuery: boolean = false;
+  trustedHtml: SafeHtml;
   texbookIdConfig =
     {
       "do_2138168881245880321735": "4c67c7f4-0919-11ee-9081-0242ac110002"
@@ -191,19 +192,21 @@ export class TeacherCompanionPopupComponent implements OnInit {
     }
     return this.http.post(url, request).subscribe((resData: any) => {
       
-      this.courseUrlList = '<br><b>Here are some additional learning materials which can help you learn more about this chapter :' + this.chapterTilte + '</b>' ,
+      this.courseUrlList = '<br>Here are some additional learning materials which can help you learn more about this chapter :' + '<b>' + this.chapterTilte + '</b>',
       // this.courseUrlList.push(reData.courseUrlName);
       resData.result.content.map(dataList => {
-        this.courseUrlList =  this.courseUrlList + '<br>'+ dataList?.name + ':' + ' <a target="_blank" href="https://diksha.gov.in/ncert/play/' + dataList?.objectType.toLowerCase() + '/' + dataList?.identifier + '?contentType=' + dataList?.contentType + '">Learn More</a>';
+        this.courseUrlList =  this.courseUrlList + '<div class="subText">' + '<b>' + dataList?.name + '</b>' + ' <a target="_blank" class="ml-8" href="https://diksha.gov.in/ncert/play/' + dataList?.objectType.toLowerCase() + '/' + dataList?.identifier + '?contentType=' + dataList?.contentType + '">Learn More</a>' + '</div>';
         // console.log(dataList?.name + ':https://diksha.gov.in/ncert/play/' + dataList?.objectType + '/' + dataList?.identifier + '?contentType=' + dataList?.contentType);
         // reData = {
         //   courseUrlName: dataList?.name + ':' + ' <a target="_blank" href="https://diksha.gov.in/ncert/play/' + dataList?.objectType.toLowerCase() + '/' + dataList?.identifier + '?contentType=' + dataList?.contentType + '">Learn More</a>'
         // };
         // this.courseUrlList.push(reData.courseUrlName);
       })
+      this.trustedHtml = this.sanitizer.bypassSecurityTrustHtml(this.courseUrlList);
       this.toGetApiResponse(QueryData, this.uuid).subscribe(data => { });
     })
   }
+
   closeDialog(): void {
     this.dialogRef.close();
   }
@@ -214,6 +217,11 @@ export class TeacherCompanionPopupComponent implements OnInit {
       this.chapterTilte = this.selectedOption
 
     }
+  }
+  newQuery() {
+    this.firstPage = true;
+    this.secondPage = false;
+    this.showDesc = false;
   }
   searchBasedQuery() {
     // this.courseUrlList = [];

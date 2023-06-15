@@ -4,12 +4,30 @@
         <div>
             <h6 class="dialog-title sb-color-primary sb__ellipsis fnormal" *ngIf="secondPage">Chapter: {{chapterTilte}}
             </h6>
-            <h6 class="dialog-title sb-color-primary sb__ellipsis fnormal" *ngIf="firstPage">Hi <b>{{userName ? userName: 'Guest'}}</b></h6>
+            <h6 class="dialog-title sb-color-primary sb__ellipsis fnormal" *ngIf="firstPage">Hi <b>{{userName ?
+                    userName: 'Guest'}}</b></h6>
         </div>
-        <button class="ml-auto" color="warn" mat-button mat-dialog-close><mat-icon>close</mat-icon></button>
+        <button mat-button color="accent" *ngIf="!firstPage" [matTooltip]="'Select a query'"
+            (click)="newQuery();"><mat-icon class="mr-8">fluorescent</mat-icon>New Query</button>
+        <button class="ml-auto" mat-mini-fab color="warn" mat-dialog-close><mat-icon>close</mat-icon></button>
     </div>
     <div mat-dialog-content class="layout-mat-dialog-content d-flex flex-jc-center">
-        <div *ngIf="firstPage" class="mt-40">
+        <div class="hero">
+            <div class="cube"></div>
+            <div class="cube"></div>
+            <div class="cube"></div>
+            <div class="cube"></div>
+            <div class="cube"></div>
+            <div class="cube"></div>
+        </div>
+        <div class='ripple-background'>
+            <div class='circle xxlarge shade1'></div>
+            <div class='circle xlarge shade2'></div>
+            <div class='circle large shade3'></div>
+            <div class='circle mediun shade4'></div>
+            <div class='circle small shade5'></div>
+        </div>
+        <div *ngIf="firstPage" class="mt-40 d-flex flex-ai-center flex-jc-center flex-dc">
             <h2 class="sb-color-primary mb-40">{{pageTitle}}</h2>
             <div class="w-75 text-center m-auto">
                 <mat-form-field color="primary" class="w-100">
@@ -19,17 +37,23 @@
                             }}</mat-option>
                     </mat-select>
                 </mat-form-field>
+                <br><br>
+                <button class="sb-btn sb-btn-primary sb-btn-normal m-auto"
+                    (click)="onSubmit(selectedOption)">Next</button>
             </div>
+
         </div>
 
         <div *ngIf="conversion?.length>0 && showDesc" class="w-100">
             <div *ngFor="let data of conversion" class="container" class="content">
-                <div class="question"><span class="user_profile">{{userName?.charAt(0)?userName?.charAt(0): 'G'}}</span>{{ data?.question }}
+                <div class="question"><span class="user_profile">{{userName?.charAt(0)?userName?.charAt(0):
+                        'G'}}</span>{{ data?.question }}
                 </div>
-                <p [ngClass]="data?.isError ? 'answ sb-color-error' : 'answ'" id='{{"chatAnswer" + data.index}}'>
+                <div [ngClass]="data?.isError ? 'answ sb-color-error' : 'answ'" id='{{"chatAnswer" + data.index}}'>
                     <span class="chat_profile"><img alt="Icon" class="icon-image ml-8" width="48"
-                            [src]="botImg" /></span> <span [innerHTML]="transformHTML(data?.response)"> </span>
-                </p>
+                            [src]="botImg" /></span> <span class="text" [innerHTML]="transformHTML(data?.response)">
+                    </span>
+                </div>
                 <!-- <div *ngIf="courseUrlList.length && isSearchQuery"class="answ">
                     <span class="chat_profile"><img alt="Icon" class="icon-image ml-8" width="48"
                             [src]="botImg" /></span>
@@ -50,8 +74,7 @@
                 <div class="dot"></div>
             </figure>
         </div>
-        <button *ngIf="firstPage" class="sb-btn sb-btn-primary sb-btn-normal m-auto"
-            (click)="onSubmit(selectedOption)">Next</button>
+
         <div class="button-container m-auto" *ngIf="secondPage">
             <button class="sb-btn sb-btn-primary sb-btn-normal d-flex flex-ai-center btn-action"
                 (click)="onFeatureClick('Quiz')" [matTooltip]="quizHover"><mat-icon>quiz</mat-icon> <span
