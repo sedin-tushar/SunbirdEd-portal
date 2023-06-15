@@ -331,8 +331,9 @@ function endSession(request, response, next) {
   next()
 }
 
-process.env.sunbird_environment = "dev"
-process.env.sunbird_instance = "sunbird"
+process.env.sunbird_environment = "staging";
+process.env.sunbird_instance = "sunbird";
+process.env.sunbird_default_channel = "ntp";
 if (!process.env.sunbird_environment || !process.env.sunbird_instance) {
   logger.error({
     msg: `please set environment variable sunbird_environment,sunbird_instance
