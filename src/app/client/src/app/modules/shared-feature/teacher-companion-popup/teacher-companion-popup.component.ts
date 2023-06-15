@@ -222,6 +222,7 @@ export class TeacherCompanionPopupComponent implements OnInit {
     this.firstPage = true;
     this.secondPage = false;
     this.showDesc = false;
+    this.conversion = [];
   }
   searchBasedQuery() {
     // this.courseUrlList = [];
