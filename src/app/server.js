@@ -1,4 +1,12 @@
 'use strict'
+
+if (process.env.NODE_ENV === 'development') {
+  const processEnv = require('dotenv').config();
+  console.log(`Running in ${process.env.NODE_ENV} node`);
+} else {
+  console.log("Running in production mode");
+}
+
 const { enableLogger } = require('@project-sunbird/logger');
 const envHelper = require('./helpers/environmentVariablesHelper.js');
 const path = require('path');
