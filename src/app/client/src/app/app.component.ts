@@ -314,8 +314,7 @@ export class AppComponent implements OnInit, OnDestroy {
     //     }
     //     else { this.isPopupEnabled = true; }
     //   }, error => { this.isPopupEnabled = true; });
-    const isOnboarding = this.onboardingService.getOnboardingStatus();
-    this.isPopupEnabled = isOnboarding;
+    this.isPopupEnabled = this.onboardingService.getOnboardingStatus();
   }
   ngOnInit() {
     this.getOnboardingList();
