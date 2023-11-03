@@ -16,7 +16,7 @@ import { APP_BASE_HREF } from '@angular/common';
 import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import { DataService } from './../data/data.service';
 import { environment } from '@sunbird/environment';
-
+import { OnboardingService } from '../onboarding/onboarding.service';
 
 /**
  * Service to fetch user details from server
@@ -37,7 +37,7 @@ export class UserService {
 
   timeDiff: any;
 
-  //default Board for the instance 
+  //default Board for the instance
   defaultBoard:any;
 
   /**
@@ -122,7 +122,7 @@ export class UserService {
   * @param {ConfigService} config ConfigService reference
   * @param {LearnerService} learner LearnerService reference
   */
-  constructor(config: ConfigService, learner: LearnerService, private cacheService: CacheService,
+  constructor(private onboardingService: OnboardingService,config: ConfigService, learner: LearnerService, private cacheService: CacheService,
     private http: HttpClient, contentService: ContentService, publicDataService: PublicDataService,
     @Inject(APP_BASE_HREF) baseHref: string, private dataService: DataService) {
     this.config = config;
@@ -504,7 +504,9 @@ export class UserService {
         this._guestData$.next({ userProfile: this.guestUserProfile });
         return of(this.guestUserProfile);
       } else {
-        return throwError(undefined);
+        const isOnboarding = this.onboardingService.getOnboardingStatus();
+        const mockGuest = { "formatedName": "Guest" };
+        return isOnboarding === false ? of(mockGuest) : throwError(undefined);
       }
     }
   }
@@ -551,7 +553,7 @@ export class UserService {
     } else {
       userFramework = (isUserLoggedIn && framework && _.pick(framework, ['medium', 'gradeLevel', 'board', 'id'])) || {};
     }
-  
+
     return { board: this.defaultBoard, ...userFramework };
   }
 }

@@ -18,7 +18,7 @@ import { CacheService } from '../app/modules/shared/services/cache-service/cache
 import { DOCUMENT } from '@angular/common';
 import { image } from '../assets/images/tara-bot-icon';
 import { SBTagModule } from 'sb-tag-manager';
-
+import { OnboardingService } from './modules/core/services/onboarding/onboarding.service';
 /**
  * main app component
  */
@@ -131,7 +131,7 @@ export class AppComponent implements OnInit, OnDestroy {
   @ViewChild('resetFontSize') resetFontSize: ElementRef;
   @ViewChild('darkModeToggle') darkModeToggle: ElementRef;
 
-  constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
+  constructor( private onboardingService: OnboardingService ,private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
     private permissionService: PermissionService, public resourceService: ResourceService,
     private deviceRegisterService: DeviceRegisterService, private courseService: CoursesService, private tenantService: TenantService,
@@ -152,7 +152,7 @@ export class AppComponent implements OnInit, OnDestroy {
       document.documentElement.setAttribute('layout', 'base');
     }
   }
-  
+
   /**
    * dispatch telemetry window unload event before browser closes
    * @param  event
@@ -314,7 +314,8 @@ export class AppComponent implements OnInit, OnDestroy {
     //     }
     //     else { this.isPopupEnabled = true; }
     //   }, error => { this.isPopupEnabled = true; });
-    this.isPopupEnabled = true;
+    const isOnboarding = this.onboardingService.getOnboardingStatus();
+    this.isPopupEnabled = isOnboarding;
   }
   ngOnInit() {
     this.getOnboardingList();
