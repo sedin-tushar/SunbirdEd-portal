@@ -8,13 +8,13 @@ import { GroupsService } from '../../services';
 describe('FtuPopupComponent', () => {
   let component: FtuPopupComponent;
   let mockResourceService: Partial<ResourceService> = {
-      instance: 'mockInstance' 
+      instance: 'mockInstance'
    };
   let mockActivatedRoute: Partial<ActivatedRoute> = {
-      snapshot: {} as any 
+      snapshot: {} as any
   };
   let mockGroupService: Partial<GroupsService>= {
-      addTelemetry: jest.fn() 
+      addTelemetry: jest.fn()
   };
 
   beforeAll(() => {
@@ -47,5 +47,19 @@ describe('FtuPopupComponent', () => {
   it('should call addTelemetry method of GroupsService when addTelemetry is called', () => {
     component.addTelemetry('testId');
     expect(mockGroupService.addTelemetry).toHaveBeenCalledWith({ id: 'testId' }, {}, []);
+  });
+
+    it('should initialize instance and slideConfig1 in ngOnInit', () => {
+    const expectedInstance = mockResourceService.instance;
+    const expectedSlideConfig1 = {
+      'slidesToShow': 1,
+      'infinite': false,
+      'rtl': false,
+      'dots': true,
+      'adaptiveHeight': true
+    };
+    component.ngOnInit();
+    expect(component.instance).toEqual(expectedInstance);
+    expect(component.slideConfig1).toEqual(expectedSlideConfig1);
   });
 });

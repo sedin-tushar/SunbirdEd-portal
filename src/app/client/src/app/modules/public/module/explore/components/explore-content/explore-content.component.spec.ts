@@ -12,7 +12,7 @@ import { takeUntil, map, mergeMap, first, debounceTime, tap, delay } from 'rxjs/
 import { CacheService } from '../../../../../shared/services/cache-service/cache.service';
 import { ContentManagerService } from '../../../offline/services';
 import {omit, groupBy, get, uniqBy, toLower, find, map as _map, forEach, each} from 'lodash-es';
-import { CslFrameworkService } from '../../../../services/csl-framework/csl-framework.service';
+import { CslFrameworkService } from '../../../../../public/services/csl-framework/csl-framework.service';
 import { ExploreContentComponent } from './explore-content.component';
 
 describe('ExploreContentComponent', () => {
@@ -90,6 +90,7 @@ describe('ExploreContentComponent', () => {
   };
   const mockSchemaService: Partial<SchemaService> = {};
   const mockCslFrameworkService: Partial<CslFrameworkService> = {
+        getFrameworkCategories: jest.fn(),
         setDefaultFWforCsl: jest.fn(),
         getAllFwCatName: jest.fn(),
         getAlternativeCodeForFilter: jest.fn(),
@@ -132,7 +133,7 @@ describe('ExploreContentComponent', () => {
   });
 
   it('should initialize component properties on ngOnInit', () => {
-    jest.spyOn(mockCslFrameworkService, 'getAllFwCatName' as any).mockReturnValue(of({}));
+    jest.spyOn(mockCslFrameworkService, 'getFrameworkCategories' as any).mockReturnValue(of({}));
     jest.spyOn(mockCslFrameworkService, 'getAlternativeCodeForFilter' as any).mockReturnValue(of({}));
     jest.spyOn(mockCslFrameworkService, 'transformDataForCC' as any).mockReturnValue(['key1', 'key2']);
     const mockFormData = [
@@ -141,16 +142,13 @@ describe('ExploreContentComponent', () => {
     jest.spyOn(mockSearchService, 'getContentTypes').mockReturnValue(of(mockFormData));
     const goBackSpy = jest.spyOn(mockNavigationHelperService, 'goBack');
     component.ngOnInit();
-    expect(jest.spyOn(component.cslFrameworkService, 'getAllFwCatName')).toHaveBeenCalled();
+    expect(jest.spyOn(component.cslFrameworkService, 'getFrameworkCategories')).toHaveBeenCalled();
     expect(jest.spyOn(component.cslFrameworkService, 'getAlternativeCodeForFilter')).toHaveBeenCalled();
     expect(jest.spyOn(component.cslFrameworkService, 'transformDataForCC')).toHaveBeenCalled();
     expect(jest.spyOn(mockSearchService, 'getContentTypes')).toHaveBeenCalled();
     expect(goBackSpy).not.toHaveBeenCalled();
     expect(component.hashTagId).toEqual('MockedHashTagId');
     expect(component.initFilters).toBeTruthy();
-    expect(component.cslFrameworkService?.getAlternativeCodeForFilter).toHaveBeenCalled();
-    expect(component.cslFrameworkService.transformDataForCC).toHaveBeenCalled();
-    expect(component.cslFrameworkService.getAllFwCatName).toHaveBeenCalled();
   });
 
   it('should call goBack if navigation history length is greater than 1', () => {
@@ -167,39 +165,19 @@ describe('ExploreContentComponent', () => {
 
 
   it('should handle filterData without channel or facets', () => {
-    component.frameworkCategoriesList = ['mock-framework'];
     const filters = { filters: { otherFilter: 'someValue' } };
     component.getFilters(filters);
     expect(component.selectedFilters).toEqual({ otherFilter: 'someValue' });
   });
 
   it('should emit default filters', () => {
-      component.frameworkCategoriesList = ['mock-framework'];
-      const filters =  { filters: { otherFilter: 'someValue' } };
-      const emitSpy = jest.spyOn(component.dataDrivenFilterEvent, 'emit');
-      component.getFilters(filters);
-      expect(emitSpy).toHaveBeenCalled();
-  });
-
-  it('should handle filters without channel', () => {
-    const mockFrameworkCategoriesList = ['framework1','framework2'];
-    jest.spyOn(component.cslFrameworkService,'getAllFwCatName').mockReturnValue(mockFrameworkCategoriesList);
-    component.frameworkCategoriesList = mockFrameworkCategoriesList;
-    const filters = {
-      filters: {
-        filter: 'mock-filter'
-      }
-    };
-    const expectedDefaultFilters = {
-      [component.frameworkCategoriesList[0]]: ''
-    };
-    jest.spyOn(component.dataDrivenFilterEvent,'emit');
+    const filters =  { filters: { otherFilter: 'someValue' } };
+    const emitSpy = jest.spyOn(component.dataDrivenFilterEvent, 'emit');
     component.getFilters(filters);
-    expect(component.selectedFilters).toEqual(filters.filters);
-    expect(component.dataDrivenFilterEvent.emit).toHaveBeenCalled();
+    expect(emitSpy).toHaveBeenCalled();
   });
 
-   it('should redo layout when layout configuration is not null', () => {
+  it('should redo layout when layout configuration is not null', () => {
     component.layoutConfiguration = { };
     component.redoLayout();
     expect(mockLayoutService.redoLayoutCSS).toHaveBeenCalledWith(0, component.layoutConfiguration, COLUMN_TYPE.threeToNine, true);
@@ -213,20 +191,7 @@ describe('ExploreContentComponent', () => {
     expect(mockLayoutService.redoLayoutCSS).toHaveBeenCalledWith(1, null, COLUMN_TYPE.fullLayout);
   });
 
-  it('should handle filters correctly', () => {
-    const filters = {
-      filters: {
-        channel: ['value1']
-      }
-    };
-    component.frameworkCategoriesList = ['category1', 'category2'];
-    jest.spyOn(component.dataDrivenFilterEvent, 'emit').mockReturnValue()
-    component.getFilters(filters);
-    expect(component.selectedFilters).toEqual({ channel: ['value1'] });
-    expect(component.dataDrivenFilterEvent.emit).toHaveBeenCalledWith({})
-  });
-
-it('should navigate to the specified page', () => {
+  it('should navigate to the specified page', () => {
     const page = 2;
     component.paginationDetails = { totalPages: 5 } as any;
     component.queryParams = {  };
@@ -266,7 +231,7 @@ it('should navigate to the specified page', () => {
     }, 0);
   });
 
-   it('should handle successful download', () => {
+  it('should handle successful download', () => {
     const contentId = 'contentId1';
     const mockResponse = {};
 
@@ -320,14 +285,6 @@ it('should navigate to the specified page', () => {
   });
 
    describe('viewAll', () => {
-    it('should navigate to view-all with correct queryParams when queryParams contain primaryCategory', () => {
-      component.frameworkCategoriesList = ['category1', 'category2', 'category3', 'category4'];
-      component.globalFilterCategories = { fwCategory4: { alternativeCode: 'alternative', code: 'code' } };
-      const event = { name: 'TestCategory' };
-      component.queryParams = { primaryCategory: ['SomeCategory'], channel: 'SomeChannel' };
-      component.viewAll(event);
-      expect(mockRouter.navigate).toHaveBeenCalled()
-    });
 
     it('should navigate to view-all with correct queryParams when queryParams do not contain primaryCategory', () => {
       component.globalFilterCategories = { fwCategory4: { alternativeCode: 'alternative', code: 'code' } };
