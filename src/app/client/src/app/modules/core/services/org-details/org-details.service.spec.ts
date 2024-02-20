@@ -68,6 +68,7 @@ describe('OrgDetailsService', () => {
     get: jest.fn().mockImplementation(() => { of({}) })
   };
   const mockPublicDataService: Partial<PublicDataService> = {
+    postWithHeaders: jest.fn(),
     post: jest.fn().mockImplementation(() => {})
   };
 
@@ -282,4 +283,16 @@ describe('OrgDetailsService', () => {
       expect(result).toEqual({});
   });
 
+
+  it('should handle error when API call fails', () => {
+    const getElementByIdMock = jest.spyOn(document, 'getElementById');
+    getElementByIdMock.mockReturnValue({ value: 'mockedValue' } as HTMLInputElement);
+    jest.spyOn(mockPublicDataService as any,'postWithHeaders').mockReturnValue(throwError({}));
+
+    orgDetailsService.getOrgDetails().subscribe({
+      error: (err) => {
+        expect(err).toBeDefined();
+      }
+    });
+  });
 });
