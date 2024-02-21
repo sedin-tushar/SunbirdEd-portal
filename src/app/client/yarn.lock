@@ -2581,10 +2581,10 @@
   dependencies:
     tslib "^2.0.0"
 
-"@project-sunbird/sb-content-section@6.0.0":
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-content-section/-/sb-content-section-6.0.0.tgz#1100c2b9fd2735faacb44cf6de9e1f8ce3cc4606"
-  integrity sha512-DmUhDk6wfvqyGIFF95rVcuPiTElycyUO3tqp45QPkUnVkh2HXdri77cbmt8pXXg/S9y5APZ5TR4ajwcxof67+Q==
+"@project-sunbird/sb-content-section@7.0.1":
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-content-section/-/sb-content-section-7.0.1.tgz#4eb54c30cc6c78ca0b397b306def42c973ae6138"
+  integrity sha512-lCuausEHVCMMARIc6mLapDsFkhplPQAc627uF66ep8XR3XKnh5Dux0Kf+Vhe5eOGS9b826GSq4Td5sac6DtDpA==
   dependencies:
     tslib "^2.0.0"
 
@@ -2624,10 +2624,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-styles/-/sb-styles-0.0.15.tgz#7e59900fe0f1033b53ffde7cf5d6e95dea19cfdc"
   integrity sha512-YzG3EzZOYoRfl374uCDcfUzBNmkVF8YPTN12lrKjFbTI694GpDMqb6Gge83rtwCtT+hRxw5r/OPftFTguQnBCA==
 
-"@project-sunbird/sb-themes@0.0.88":
-  version "0.0.88"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.88.tgz#cd11ac1f3da915c7c433e6ac9e20ee29b6c52616"
-  integrity sha512-12eKzpToyjJAKTLLFWq9Zo3+Y6tzi2GE0YBNbErfMxs9iAubliqApkwGMH/ry2qYhV8S/uiEcE4JPwtX2HZcYA==
+"@project-sunbird/sb-themes@0.0.90":
+  version "0.0.90"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.90.tgz#a84acc8ec2aa0568c1c67c801cd7d6aabf6fb259"
+  integrity sha512-W+4rn2OrMuFk2jWP0VQJaL7tWE5CHA46qwlEWEs4x8ajCvm4Wdc74dSYR56j+bUpz8HAX5eV/ZgOjwLacPVswQ==
   dependencies:
     "@project-sunbird/sb-styles" "0.0.14"
 
@@ -2668,13 +2668,6 @@
   dependencies:
     ally.js "1.4.1"
 
-"@project-sunbird/sunbird-player-sdk-v9@6.0.0":
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-player-sdk-v9/-/sunbird-player-sdk-v9-6.0.0.tgz#1afb2e84c2506c7db8493084fa26b45a2825844d"
-  integrity sha512-E8ybY5ulxZ7NyBq3Suljz1LsyXHeFsmdJ2NbNZLHKY5WpBF6qtOQDtpjINPTMAPOqlOpR7xAcVMoPxCuP82RGw==
-  dependencies:
-    ally.js "1.4.1"
-
 "@project-sunbird/sunbird-questionset-editor@7.0.4":
   version "7.0.4"
   resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-questionset-editor/-/sunbird-questionset-editor-7.0.4.tgz#0414564f8c1ebf1e118a1c9a27c17378f858cda8"
@@ -2690,12 +2683,12 @@
     "@project-sunbird/sunbird-player-sdk-v9" "5.1.0"
     tslib "^2.2.0"
 
-"@project-sunbird/sunbird-quml-player@7.0.2":
-  version "7.0.2"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player/-/sunbird-quml-player-7.0.2.tgz#b8e91dc1deb17ed71bdba6866066d089b8ab9515"
-  integrity sha512-mjnVY1DySBCGtm59IqPVkaTWpG0qXHIXNI8O2PAXhdPVjyUQVe4pnCjm8WyU20f0j1nDmQkL+Rn3m4aVQbHm8g==
+"@project-sunbird/sunbird-quml-player@7.0.3":
+  version "7.0.3"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player/-/sunbird-quml-player-7.0.3.tgz#ded7524de332e6dbefa76adc1fd8b80055039191"
+  integrity sha512-j52RRuUsa91DURuB0DdWxa5gSXGLKIlyzYShc0inI3lhFuv/LELw8NLDn7GGIpsoDqjm+oR3vZWrNZxJ5ZkCmg==
   dependencies:
-    "@project-sunbird/sunbird-player-sdk-v9" "6.0.0"
+    "@project-sunbird/sunbird-player-sdk-v9" "5.1.0"
     tslib "^2.3.0"
 
 "@project-sunbird/sunbird-resource-library@7.0.3":
@@ -5061,7 +5054,7 @@ combined-stream@^1.0.6, combined-stream@^1.0.8, combined-stream@~1.0.6:
   dependencies:
     delayed-stream "~1.0.0"
 
-commander@^2.11.0, commander@^2.12.1, commander@^2.19.0, commander@^2.20.0, commander@^2.20.3, commander@^2.8.1:
+commander@^2.11.0, commander@^2.12.1, commander@^2.20.0, commander@^2.20.3, commander@^2.8.1:
   version "2.20.3"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.20.3.tgz#fd485e84c03eb4881c20722ba48035e8531aeb33"
   integrity sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==
@@ -5070,6 +5063,11 @@ commander@^7.2.0:
   version "7.2.0"
   resolved "https://registry.yarnpkg.com/commander/-/commander-7.2.0.tgz#a36cb57d0b501ce108e4d20559a150a391d97ab7"
   integrity sha512-QrWXB+ZQSVPmIWIhtEO9H+gwHaMGYiF5ChvoJ+K9ZGHG/sVsa6yiesAD1GC/x46sET00Xlwo1u49RVVVzvcSkw==
+
+commander@^8.3.0:
+  version "8.3.0"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-8.3.0.tgz#4837ea1b2da67b9c616a67afbb0fafee567bca66"
+  integrity sha512-OkTL9umf+He2DZkUq8f8J9of7yL6RJKI24dVITBmNfZBmri9zYZQrKkuXiKhyfPSu8tUhnVBB1iKXevvnlR4Ww==
 
 common-form-elements-v9@4.5.0:
   version "4.5.0"
@@ -8964,22 +8962,17 @@ joi@17.4.0:
     "@sideway/formula" "^3.0.0"
     "@sideway/pinpoint" "^2.0.0"
 
-jquery.fancytree@2.35.0:
-  version "2.35.0"
-  resolved "https://registry.yarnpkg.com/jquery.fancytree/-/jquery.fancytree-2.35.0.tgz#5151279eb6817d470112bf7435e128d7569d2ae5"
-  integrity sha512-eRNWU8z69UQWc3+M2IvMGPpqTZ5ZsWAR0/N/a0O7eRbjM8StC0RGUc+xg4BNL4W6hFlWeuVT7eP2T8rLW7l05A==
+jquery.fancytree@2.38.3:
+  version "2.38.3"
+  resolved "https://registry.yarnpkg.com/jquery.fancytree/-/jquery.fancytree-2.38.3.tgz#20ffee0ee07ffdb99621ce0c7305a82f67c0c2f1"
+  integrity sha512-C3CJcp4sPThy497YBXZNrDSVn/B34sv6kB+toC8gfHrPvJWgYkL3NSMovBxXo6fN6yXUnvWhWaON/ejG3Nsxdg==
 
 jquery@3.4.1:
   version "3.4.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.4.1.tgz#714f1f8d9dde4bdfa55764ba37ef214630d80ef2"
   integrity sha512-36+AdBzCL+y6qjw5Tx7HgzeGCzC81MDDgaUP8ld2zhx58HdqXGoBd+tHdrBMiyjGQs0Hxs/MLZTu/eHNJJuWPw==
 
-jquery@3.5.1:
-  version "3.5.1"
-  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.5.1.tgz#d7b4d08e1bfdb86ad2f1a3d039ea17304717abb5"
-  integrity sha512-XwIBPqcMn57FxfT+Go5pzySnm4KWkT1Tv7gjrpT1srtf8Weynl6R273VJ5GjkRb51IzMp5nbaPjJXMWeju2MKg==
-
-jquery@>=1.7, jquery@~3:
+jquery@3.7.1, jquery@>=1.7, jquery@~3:
   version "3.7.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.7.1.tgz#083ef98927c9a6a74d05a6af02806566d16274de"
   integrity sha512-m4avr8yL8kmFN8psrbFFFmB/If14iN5o9nw/NgnnM+kybDJpRsAynV2BsfpTYrTRysYUdADVD7CkUUizgkpLfg==
@@ -9297,12 +9290,12 @@ karma@^5.0.9:
     ua-parser-js "0.7.22"
     yargs "^15.3.1"
 
-katex@0.12.0:
-  version "0.12.0"
-  resolved "https://registry.yarnpkg.com/katex/-/katex-0.12.0.tgz#2fb1c665dbd2b043edcf8a1f5c555f46beaa0cb9"
-  integrity sha512-y+8btoc/CK70XqcHqjxiGWBOeIL8upbS0peTPXTvgrh21n1RiWWcIpSWM+4uXq+IAgNh9YYQWdc7LVDPDAEEAg==
+katex@0.16.9:
+  version "0.16.9"
+  resolved "https://registry.yarnpkg.com/katex/-/katex-0.16.9.tgz#bc62d8f7abfea6e181250f85a56e4ef292dcb1fa"
+  integrity sha512-fsSYjWS0EEOwvy81j3vRA8TEAhQhKiqO+FQaKWp0m39qwOzHVBgAUBIXWj1pB+O2W3fIpNa6Y9KSKCVbfPhyAQ==
   dependencies:
-    commander "^2.19.0"
+    commander "^8.3.0"
 
 keycode@2.2.0:
   version "2.2.0"
@@ -12038,10 +12031,10 @@ sb-svg2pdf-v13@1.0.0:
   dependencies:
     tslib "^2.0.0"
 
-sb-tag-manager@3.9.15:
-  version "3.9.15"
-  resolved "https://registry.yarnpkg.com/sb-tag-manager/-/sb-tag-manager-3.9.15.tgz#eb3eb76253eb705899d423643fc9569183bc1b23"
-  integrity sha512-/ZukSpRPwTRAJHhZuXNtdZrAzHcvYXWIkN2vvn4eNBEbM25p1Y0GCp4cjaIpUknmckXWyj3R4FOKNHSgVWa0sg==
+sb-tag-manager@3.9.19:
+  version "3.9.19"
+  resolved "https://registry.yarnpkg.com/sb-tag-manager/-/sb-tag-manager-3.9.19.tgz#f9ca802c7b6618b9c5e694f8a17e525091d06077"
+  integrity sha512-0G/gpKcInDNXzTs68jBKIGdj6vZLWZJF1UJtWU8qZiRoIWVOUyUl4RKFuzobix6kvZuHvu2kww/j4IdJ3GYWLw==
   dependencies:
     inversify "^5.0.1"
     qs "^6.9.4"
