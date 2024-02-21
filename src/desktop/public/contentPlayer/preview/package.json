@@ -42,7 +42,7 @@
     "cordova-plugin-file"
   ],
   "dependencies": {
-    "@project-sunbird/telemetry-sdk": "^0.1.0",
+    "@project-sunbird/telemetry-sdk": "^1.1.0",
     "ajv": "^6.9.2",
     "audiosprite": "*",
     "download": "5.0.0",
