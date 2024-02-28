@@ -38,7 +38,7 @@
   "license": "MIT",
   "dependencies": {
     "@project-sunbird/telemetry-sdk": "0.0.26",
-    "archiver": "^3.0.0",
+    "archiver": "^7.0.0",
     "axios": "^0.21.0",
     "body-parser": "^1.18.2",
     "chokidar": "^3.0.0",
