@@ -9,6 +9,6 @@
   "author": "Anuj Gupta",
   "license": "ISC",
   "dependencies": {
-    "cache-manager": "^2.4.0"
+    "cache-manager": "^5.0.0"
   }
 }
