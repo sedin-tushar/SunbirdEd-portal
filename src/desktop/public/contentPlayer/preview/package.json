@@ -43,7 +43,7 @@
   ],
   "dependencies": {
     "@project-sunbird/telemetry-sdk": "^0.0.14",
-    "ajv": "^6.9.2",
+    "ajv": "^8.18.0",
     "audiosprite": "*",
     "download": "4.4.3",
     "ejs": "*",
